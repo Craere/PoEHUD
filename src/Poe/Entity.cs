@@ -41,7 +41,7 @@ namespace PoeHUD.Poe
         /// <summary>
         /// 0x65004D = "Me"(4 bytes) from word Metadata
         /// </summary>
-        public bool IsValid => M.ReadInt(Address, 0x20, 0) == 0x65004D;
+        public bool IsValid => Address != 0 && M.ReadInt(Address, 0x20, 0) == 0x65004D;
 
         public uint Id => M.ReadUInt(Address + 0x40);// << 32 ^ Address;
         public int InventoryId => M.ReadInt(Address + 0x58);
@@ -55,9 +55,10 @@ namespace PoeHUD.Poe
         public bool IsTargetable => GetComponent<Targetable>().isTargetable;
         public bool CannotDieAura => HasBuff("monster_aura_cannot_die");
         public bool BestiaryMonsterCaptured => HasBuff("capture_monster_trapped");
-        public bool IsHidden => GetComponent<Stats>().GameStatDictionary.TryGetValue(GameStat.IsHiddenMonster, out var stat) && stat == 1;
-        public bool CannotBeDamagedStat => GetComponent<Stats>().GameStatDictionary.TryGetValue(GameStat.CannotBeDamaged, out var stat) && stat == 1;
+        public bool IsHidden => HasStat(GameStat.IsHiddenMonster, out var stat) && stat == 1;
+        public bool CannotBeDamagedStat => HasStat(GameStat.CannotBeDamaged, out var stat) && stat == 1;
         public bool Invincible => CannotDieAura || CannotBeDamagedStat;
+        public bool IsMapBoss => GetComponent<ObjectMagicProperties>().Mods.Any(a => a == "MonsterMapBoss");
         public bool IsEmerging
         {
             get
@@ -66,12 +67,18 @@ namespace PoeHUD.Poe
                     return false;
 
                 var m = Path;
-                return m.Contains("/SandSpitterEmerge/") ||
+                return 
+                    //m.Contains("/SandSpitterEmerge/") ||//was ignoring this guys https://dl.dropboxusercontent.com/s/qgxl189iieu4dm2/PoeHUD_2019-03-30_13-43-00.png
                        //   m.Contains("/WaterElemental/") ||//https://dl.dropboxusercontent.com/s/d3qb1c0tg3mo1p6/PoeHUD_2019-03-24_23-04-01.png
                        m.Contains("/RootSpiders/") ||
                        m.Contains("ZombieMiredGraspEmerge") ||
                        m.Contains("ReliquaryMonsterEmerge");
             }
+        }
+
+        public bool HasStat(GameStat statType, out int value)
+        {
+            return GetComponent<Stats>().GameStatDictionary.TryGetValue(statType, out value);
         }
 
         public bool IsActive => IsHostile && IsAlive && IsTargetable && !IsHidden;
