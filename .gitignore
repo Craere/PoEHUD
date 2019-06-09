@@ -77,3 +77,6 @@ bld/
 *.sln.iml
 
 settings.json
+/.vs
+/src/.vs/ExileHUD/v15/Server/sqlite3
+/src/.vs/ExileHUD/DesignTimeBuild

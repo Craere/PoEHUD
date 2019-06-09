@@ -126,5 +126,9 @@ namespace PoeHUD.Hud.Health
         {
             return Life.CurHP + Life.CurES;
         }
+        public bool IsLegionAndHidden(EntityWrapper entity)
+        {
+            return entity.Path.Contains("LegionLeague") && !entity.IsActive;
+        }
     }
 }
