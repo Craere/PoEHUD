@@ -29,10 +29,10 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
                         return InventoryType.CurrencyStash;
                     case 0x40:
                         return InventoryType.FragmentStash;
-                    case 0x06:
-                        if (this.AsObject<Element>().Parent.Children[0].ChildCount == 9)
-                            return InventoryType.MapStash;
+                    case 0x05:
                         return InventoryType.DivinationStash;
+                    case 0x06:
+                        return InventoryType.MapStash;
                     case 0x01:
                         // Normal Stash and Quad Stash is same.
                         if (TotalBoxesInInventoryRow == 24)
