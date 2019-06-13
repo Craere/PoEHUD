@@ -15,6 +15,7 @@ namespace PoeHUD.Hud.Trackers
             PerandusChest = true;
             BreachChest = true;
             LegionChest = true;
+            LegionGeneral = true;
 
             MastersIcon = new RangeNode<int>(8, 1, 16);
             CadiroIcon = new RangeNode<int>(8, 1, 16);
@@ -32,6 +33,8 @@ namespace PoeHUD.Hud.Trackers
             LegionEpicNoCrystalChestColor = new ColorBGRA(255, 0, 0, 255);
             LegionEpicChestIcon = new RangeNode<int>(14, 1, 28);
             LegionEpicChestColor = new ColorBGRA(255, 0, 200, 255);
+            LegionGeneralChestIcon = new RangeNode<int>(25, 1, 28);
+            LegionGeneralColor = new ColorBGRA(153, 102, 0, 255);
         }
 
         public ToggleNode Masters { get; set; }
@@ -41,6 +44,7 @@ namespace PoeHUD.Hud.Trackers
         public ToggleNode PerandusChest { get; set; }
         public ToggleNode BreachChest { get; set; }
         public ToggleNode LegionChest { get; set; }
+        public ToggleNode LegionGeneral { get; set; }
         public RangeNode<int> MastersIcon { get; set; }
         public RangeNode<int> CadiroIcon { get; set; }
         public RangeNode<int> ChestsIcon { get; set; }
@@ -51,11 +55,13 @@ namespace PoeHUD.Hud.Trackers
         public RangeNode<int> LegionNoCrystalChestIcon { get; set; }
         public RangeNode<int> LegionEpicNoCrystalChestIcon { get; set; }
         public RangeNode<int> LegionEpicChestIcon { get; set; }
+        public RangeNode<int> LegionGeneralChestIcon { get; set; }
         public ColorNode PerandusChestColor { get; set; }
         public ColorNode BreachChestColor { get; set; }
         public ColorNode LegionChestColor { get; set; }
         public ColorNode LegionNoCrystalChestColor { get; set; }
         public ColorNode LegionEpicNoCrystalChestColor { get; set; }
         public ColorNode LegionEpicChestColor { get; set; }
+        public ColorNode LegionGeneralColor { get; set; }
     }
 }

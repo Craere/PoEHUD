@@ -49,7 +49,8 @@ namespace PoeHUD.Hud.Trackers
 
         private static readonly List<string> masters_without_npc_component = new List<string>
         {
-            "Metadata/Terrain/Leagues/Incursion/Objects/IncursionPortal1"
+            "Metadata/Terrain/Leagues/Incursion/Objects/IncursionPortal1",
+            "Metadata/Terrain/Leagues/Legion/Objects/LegionFlashLight"
         };
 
         public PoiTracker(GameController gameController, Graphics graphics, PoiTrackerSettings settings)
@@ -92,28 +93,38 @@ namespace PoeHUD.Hud.Trackers
             {
                 return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.PerandusChestColor), () => Settings.PerandusChest, Settings.PerandusChestIconSize);
             }
-            //Legion Monster Icons
-            if (ePath.Contains("Metadata/Monsters/LegionLeague/MonsterChest") || (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened) && ePath.StartsWith("Metadata/Chests/LegionChests"))
-            {
-                // Parse Legion Chests
-                if (ePath.Contains("EpicNoCrystal"))
+            //Legion League
+            if (ePath.StartsWith("Metadata/Monsters/LegionLeague/"))
+            {   
+                //Generals
+                if (ePath.EndsWith("General"))
                 {
-                    // epic Legion chests with no crystal
-                    return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionEpicNoCrystalChestColor), () => Settings.LegionChest, Settings.LegionEpicNoCrystalChestIcon);
+                    return new ChestMapIcon(e, new HudTexture("dot_rgb.png", Settings.LegionGeneralColor), () => Settings.LegionGeneral, Settings.LegionGeneralChestIcon);
                 }
-                if (ePath.Contains("2"))
+                //Legion chests
+                if (ePath.StartsWith("Metadata/Monsters/LegionLeague/MonsterChest") || (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened) && ePath.StartsWith("Metadata/Chests/LegionChests"))
                 {
-                    // Epic Legion chests (with a crystal?)
-                    return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionEpicChestColor), () => Settings.LegionChest, Settings.LegionEpicChestIcon);
+                    // Parse Legion Chests
+                    if (ePath.Contains("EpicNoCrystal"))
+                    {
+                        // epic Legion chests with no crystal
+                        return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionEpicNoCrystalChestColor), () => Settings.LegionChest, Settings.LegionEpicNoCrystalChestIcon);
+                    }
+                    if (ePath.Contains("2"))
+                    {
+                        // Epic Legion chests (with a crystal?)
+                        return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionEpicChestColor), () => Settings.LegionChest, Settings.LegionEpicChestIcon);
+                    }
+                    if (ePath.Contains("NoCrystal"))
+                    {
+                        // Legion chests with no crystal
+                        return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionNoCrystalChestColor), () => Settings.LegionChest, Settings.LegionNoCrystalChestIcon);
+                    }
+                    // Legion chests (with a crystal?)
+                    return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionChestColor), () => Settings.LegionChest, Settings.LegionChestIcon);
                 }
-                if (ePath.Contains("NoCrystal"))
-                {
-                    // Legion chests with no crystal
-                    return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionNoCrystalChestColor), () => Settings.LegionChest, Settings.LegionNoCrystalChestIcon);
-                }
-                // Legion chests (with a crystal?)
-                return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionChestColor), () => Settings.LegionChest, Settings.LegionChestIcon);
             }
+            
             //chests
             if (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened)
             {

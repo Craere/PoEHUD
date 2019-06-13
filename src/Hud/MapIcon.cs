@@ -2,6 +2,7 @@ using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 using SharpDX;
 using System;
+using PoeHUD.Models.Enums;
 
 namespace PoeHUD.Hud
 {
@@ -10,10 +11,31 @@ namespace PoeHUD.Hud
         public CreatureMapIcon(EntityWrapper entityWrapper, string hudTexture, Func<bool> show, float iconSize)
             : base(entityWrapper, new HudTexture(hudTexture), show, iconSize)
         { }
-
+        /*
         public override bool IsVisible()
         {
             return base.IsVisible() && EntityWrapper.IsAlive;
+        }
+        */
+        public override bool IsVisible()
+        {
+            if (!base.IsVisible() || !EntityWrapper.IsAlive)
+                return false;
+
+            if (EntityWrapper.IsLegion)
+            {
+                var rarity = EntityWrapper.GetComponent<ObjectMagicProperties>().Rarity;
+                if (rarity < MonsterRarity.Rare && (EntityWrapper.IsFrozenInTime || !EntityWrapper.IsActive))
+                    return false;
+
+                if (rarity == MonsterRarity.Rare && !EntityWrapper.IsFrozenInTime && !EntityWrapper.IsActive)
+                    return false;
+
+                if (Math.Round(EntityWrapper.GetComponent<Life>().HPPercentage, 2) == 0.01)
+                    return false;
+            }
+
+            return true;
         }
     }
 

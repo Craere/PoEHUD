@@ -16,6 +16,8 @@ namespace PoeHUD.Models
         private readonly GameController gameController;
         private readonly Entity internalEntity;
         public bool IsInList = true;
+        public bool IsLegion => Path.StartsWith("Metadata/Monsters/LegionLeague") || Path.StartsWith("Metadata/Chests/LegionChests");
+        public bool IsFrozenInTime => HasComponent<Monster>() && GetComponent<Life>().HasBuff("frozen_in_time");
 
         public EntityWrapper(GameController Poe, Entity entity)
         {
