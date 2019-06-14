@@ -93,7 +93,7 @@ namespace PoeHUD.Hud.Trackers
             {
                 return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.PerandusChestColor), () => Settings.PerandusChest, Settings.PerandusChestIconSize);
             }
-            //Legion League
+            //Legion League Monster
             if (ePath.StartsWith("Metadata/Monsters/LegionLeague/"))
             {   
                 //Generals
@@ -101,7 +101,7 @@ namespace PoeHUD.Hud.Trackers
                 {
                     return new ChestMapIcon(e, new HudTexture("dot_rgb.png", Settings.LegionGeneralColor), () => Settings.LegionGeneral, Settings.LegionGeneralChestIcon);
                 }
-                //Legion chests
+                //Legion Monster chests
                 if (ePath.StartsWith("Metadata/Monsters/LegionLeague/MonsterChest") || (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened) && ePath.StartsWith("Metadata/Chests/LegionChests"))
                 {
                     // Parse Legion Chests
@@ -132,7 +132,10 @@ namespace PoeHUD.Hud.Trackers
                 {
                     return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.BreachChestColor), () => Settings.BreachChest, Settings.BreachChestIcon);
                 }
-
+                if (ePath.StartsWith("Metadata/Chests/LegionChests"))
+                {
+                    return new ChestMapIcon(e, new HudTexture("strongbox.png", Settings.LegionChestColor), () => Settings.LegionChest, Settings.LegionChestIcon);
+                }
                 if (ePath == "Metadata/Chests/Prophecy/Divination")//From prophecy The Fortune Teller's Collection
                 {
                     return new ChestMapIcon(e, new HudTexture("strongboxes/chest_divination.png",
