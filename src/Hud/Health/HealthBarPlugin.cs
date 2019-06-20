@@ -38,7 +38,7 @@ namespace PoeHUD.Hud.Health
             (new Coroutine(() => {foreach (var healthBar in healthBars)
                 {
                     healthBar.Value.RemoveAll(hp => !hp.Entity.IsValid);
-                } }, new WaitRender(10), nameof(HealthBarPlugin), "RemoveAll"))
+                } }, new WaitRender(0), nameof(HealthBarPlugin), "RemoveAll"))
                 .AutoRestart(GameController.CoroutineRunner).Run();
         }
 
