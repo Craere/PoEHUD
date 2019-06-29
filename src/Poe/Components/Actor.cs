@@ -14,9 +14,9 @@ namespace PoeHUD.Poe.Components
         ///     running = 2178 = bit 11 & 7
         ///     Maybe Bit-field : Bit 7 set = running
         /// </summary>
-        public int ActionId => Address != 0 ? M.ReadInt(Address + 0xF0) : 1;
+        public int ActionId => Address != 0 ? M.ReadInt(Address + 0xF8) : 1;
 
-        public ActionFlags Action => Address != 0 ? (ActionFlags)M.ReadInt(Address + 0xF0) : ActionFlags.None;
+        public ActionFlags Action => Address != 0 ? (ActionFlags)M.ReadInt(Address + 0xF8) : ActionFlags.None;
         public bool isMoving => (Action & ActionFlags.Moving) > 0;
         public bool isAttacking => (Action & ActionFlags.UsingAbility) > 0;
 
@@ -46,8 +46,8 @@ namespace PoeHUD.Poe.Components
         public ActionWrapper CurrentAction => (Action & ActionFlags.UsingAbility) > 0 ? ReadObject<ActionWrapper>(Address + 0x78) : null;
 
         // e.g minions, mines
-        private long DeployedObjectStart => M.ReadLong(Address + 0x420);
-        private long DeployedObjectEnd => M.ReadLong(Address + 0x428);
+        private long DeployedObjectStart => M.ReadLong(Address + 0x428);
+        private long DeployedObjectEnd => M.ReadLong(Address + 0x430);
         public long DeployedObjectsCount => (DeployedObjectEnd - DeployedObjectStart) / 8;
         public List<DeployedObject> DeployedObjects
         {
@@ -75,29 +75,28 @@ namespace PoeHUD.Poe.Components
         {
             get
             {
-                var skillsStartPointer = M.ReadLong(Address + 0x3B8);
-                var skillsEndPointer = M.ReadLong(Address + 0x3C0);
+                var skillsStartPointer = M.ReadLong(Address + 0x3C0);
+                var skillsEndPointer = M.ReadLong(Address + 0x3C8);
                 skillsStartPointer += 8;//Don't ask me why. Just skipping first one
+                if ((skillsEndPointer - skillsStartPointer) / 16 > 50)
+                    return new List<ActorSkill>();
 
-                int stuckCounter = 0;
                 var result = new List<ActorSkill>();
                 for (var addr = skillsStartPointer; addr < skillsEndPointer; addr += 16)//16 because we are reading each second pointer (pointer vectors)
                 {
                     result.Add(ReadObject<ActorSkill>(addr));
-                    if (stuckCounter++ > 50)
-                        return new List<ActorSkill>();
                 }
                 return result;
             }
         }
 
-		public List<ActorVaalSkill> ActorVaalSkills
+        public List<ActorVaalSkill> ActorVaalSkills
 		{
 			get
 			{
 				const int ACTOR_VAAL_SKILLS_SIZE = 0x20;
-				var skillsStartPointer = M.ReadLong(Address + 0x3E8);
-				var skillsEndPointer = M.ReadLong(Address + 0x3F0);
+				var skillsStartPointer = M.ReadLong(Address + 0x3F0);
+				var skillsEndPointer = M.ReadLong(Address + 0x3F8);
 
 				int stuckCounter = 0;
 				var result = new List<ActorVaalSkill>();
