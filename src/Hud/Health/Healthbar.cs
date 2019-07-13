@@ -21,7 +21,8 @@ namespace PoeHUD.Hud.Health
             "MonsterFireTrap2",
             "MonsterBlastRainTrap",
             "Metadata/Monsters/Frog/FrogGod/SilverOrb",
-            "Metadata/Monsters/Frog/FrogGod/SilverPool"
+            "Metadata/Monsters/Frog/FrogGod/SilverPool",
+            "Metadata/Monsters/Mirage/RangerMirage"
         };
         
         public HealthBar(EntityWrapper entity, HealthBarSettings settings)
